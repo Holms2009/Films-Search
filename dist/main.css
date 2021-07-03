@@ -21,6 +21,7 @@
   list-style: none;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 30px;
 }
 
@@ -30,7 +31,62 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
   text-decoration: none;
+  text-align: center;
   color: #ffffff;
+  transition: all 0.2s;
+}
+
+.page-header__link:hover {
+  color: lightgoldenrodyellow;
+}
+
+.page-main {
+  padding: 100px 0;
+}
+
+.page-main__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.page-main__search-field {
+  margin-bottom: 10px;
+  width: 600px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.page-main__search-field:focus {
+  outline: none;
+}
+
+.page-main__label {
+  margin-bottom: 10px;
+  font-size: 10px;
+}
+
+.page-main__search-button {
+  padding: 5px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  border: none;
+  background-color: orange;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.page-main__search-button:hover {
+  background-color: #000000;
+}
+
+.page-main__search-button:active {
+  transform: scale(0.9);
 }
 
 .container {

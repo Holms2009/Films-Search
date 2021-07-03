@@ -2,7 +2,7 @@
 
 .page-header {
     padding: 10px 0 10px;
-    background-color: orange;
+    background-color: $color1;
 }
 
 .page-header__row {
@@ -23,6 +23,7 @@
     list-style: none;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 30px;
 }
 
@@ -32,5 +33,10 @@
     letter-spacing: 0.5px;
     text-transform: uppercase;
     text-decoration: none;
+    text-align: center;
     color: #ffffff;
+    transition: all 0.2s;
+    &:hover {
+        color: $color2;
+    }
 }
