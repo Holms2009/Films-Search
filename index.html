@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Films Search</title>
     <link rel="stylesheet" href="dist/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
     <script src="script.js" defer></script>
 </head>
 
@@ -18,13 +23,13 @@
                 <nav class="page-header__nav">
                     <ul class="page-header__list">
                         <li class="page-header__item">
-                            <a href="#" class="page-header__link">Фильмы</a>
+                            <a href="#" class="page-header__link films-btn">Фильмы</a>
                         </li>
                         <li class="page-header__item">
-                            <a href="#" class="page-header__link">Люди</a>
+                            <a href="#" class="page-header__link persons-btn">Люди</a>
                         </li>
                         <li class="page-header__item">
-                            <a href="#" class="page-header__link">Информация</a>
+                            <a href="#" class="page-header__link info-btn">Информация</a>
                         </li>
                     </ul>
                 </nav>
@@ -33,9 +38,10 @@
     </header>
     <main class="page-main">
         <div class="container">
+            <h1 class="page-main__header">Поиск фильмов</h1>
             <form method="GET" class="page-main__form">
-                <input type="search" id="search-field" class="page-main__search-field" placeholder="Введите название или часть названия фильма">
-                <label for="search-field" class="page-main__label">Введите запрос</label>
+                <input type="search" class="page-main__search-field"
+                    placeholder="Введите название или часть названия фильма">
                 <input type="submit" class="page-main__search-button" value="Поиск">
             </form>
         </div>
