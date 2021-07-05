@@ -41,6 +41,7 @@ searchButton.addEventListener('click', async function (evt) {
     evt.preventDefault();
     let request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
     let response = await fetch(request + `&isStrict=false&token=${token}`);
-    let json = response.json().catch(log);
-    log(json);
+    log(response);
+    // let json = response.json().catch(log);
+    // log(json);
 })
