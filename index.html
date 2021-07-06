@@ -46,7 +46,7 @@
                     <input type="submit" class="page-main__search-button" value="Поиск">
                 </form>
             </div>
-            <div class="page-main__results"></div>
+            <div class="page-main__results" id="search-results"></div>
         </div>
         <template class="page-main__card-template">
             <section class="page-main__card">
@@ -59,8 +59,11 @@
         </template>
     </main>
     <footer class="page-footer">
-
+        <div id="like_button_container"></div>
     </footer>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="react_search.js"></script>
 </body>
 
 </html>
