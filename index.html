@@ -36,15 +36,27 @@
             </div>
         </div>
     </header>
-    <main class="page-main">
+    <main>
         <div class="container">
-            <h1 class="page-main__header">Поиск фильмов</h1>
-            <form method="GET" class="page-main__form">
-                <input type="search" class="page-main__search-field"
-                    placeholder="Введите название или часть названия фильма">
-                <input type="submit" class="page-main__search-button" value="Поиск">
-            </form>
+            <div class="page-main">
+                <h1 class="page-main__header">Поиск фильмов</h1>
+                <form method="GET" class="page-main__form">
+                    <input type="search" class="page-main__search-field"
+                        placeholder="Введите название или часть названия фильма">
+                    <input type="submit" class="page-main__search-button" value="Поиск">
+                </form>
+            </div>
+            <div class="page-main__results"></div>
         </div>
+        <template class="page-main__card-template">
+            <section class="page-main__card">
+                <img src="" alt="" class="page-main__poster">
+                <h2 class="page-main__title"></h2>
+                <span class="page-main__kp-id"></span>
+                <p class="page-main__description"></p>
+                <span class="page-main__release-year"></span>
+            </section>
+        </template>
     </main>
     <footer class="page-footer">
 
