@@ -4,19 +4,17 @@
     padding: 20px 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 10px;
 }
 
 .page-main__card {
+    box-sizing: border-box;
     margin: 0;
-    margin-bottom: 10px;
     padding: 10px;
-    width: 1000px;
     border: 1px solid $color1;
 }
 
 .page-main__poster {
     width: 200px;
-    height: 100%;
     border: 5px solid $color1;
 }

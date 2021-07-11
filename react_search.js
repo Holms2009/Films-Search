@@ -54,6 +54,21 @@ var SearchBlock = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
+      var results = void 0;
+      if (films.length > 0) {
+        results = films.map(function (film) {
+          return React.createElement(ResultCard, {
+            poster: film.poster.url,
+            name: film.name,
+            id: film.id,
+            desc: film.description,
+            year: film.year,
+            key: film.id });
+        });
+      } else {
+        results = null;
+      }
+
       return React.createElement(
         'div',
         { className: 'container' },
@@ -65,7 +80,7 @@ var SearchBlock = function (_React$Component2) {
           React.createElement(
             'div',
             { className: 'page-main__results', id: 'search-results' },
-            React.createElement(ResultCard, { state: this.state.activeSearch })
+            results
           )
         )
       );
@@ -122,10 +137,6 @@ var Form = function (_React$Component4) {
       var _this5 = this;
 
       evt.preventDefault();
-      while (results.firstChild) {
-        results.removeChild(results.lastChild);
-      }
-
       var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
       var start = fetch(request + ('&isStrict=false&token=' + token)).then(function (resp) {
         return resp.json();
@@ -133,7 +144,6 @@ var Form = function (_React$Component4) {
         films = result.docs.map(function (item) {
           return item;
         });
-        log(films);
       }).then(function () {
         return _this5.changeFormState();
       });
@@ -190,34 +200,31 @@ var ResultCard = function (_React$Component6) {
   _createClass(ResultCard, [{
     key: 'render',
     value: function render() {
-      films.forEach(function (film) {
-        return React.createElement(
-          'section',
-          { className: 'page-main__card' },
-          React.createElement('img', { src: film.poster.url, className: 'page-main__poster' }),
-          React.createElement(
-            'h2',
-            { className: 'page-main__title' },
-            film.name
-          ),
-          React.createElement(
-            'span',
-            { className: 'page-main__kp-id' },
-            'ID: ' + film.id
-          ),
-          React.createElement(
-            'p',
-            { className: 'page-main__description' },
-            film.description
-          ),
-          React.createElement(
-            'span',
-            { className: 'page-main__release-year' },
-            'Год выпуска: ' + film.year
-          )
-        );
-      });
-      return null;
+      return React.createElement(
+        'section',
+        { className: 'page-main__card' },
+        React.createElement('img', { src: this.props.poster, className: 'page-main__poster' }),
+        React.createElement(
+          'h2',
+          { className: 'page-main__title' },
+          this.props.name
+        ),
+        React.createElement(
+          'span',
+          { className: 'page-main__kp-id' },
+          'ID: ' + this.props.id
+        ),
+        React.createElement(
+          'p',
+          { className: 'page-main__description' },
+          this.props.desc
+        ),
+        React.createElement(
+          'span',
+          { className: 'page-main__release-year' },
+          'Год выпуска: ' + this.props.year
+        )
+      );
     }
   }]);
 
