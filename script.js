@@ -1,6 +1,5 @@
 'use strict'
 
-const token = 'A0MN5MW-D2WMV7F-GDWHJG6-ZBCA14Y';
 const filmsButton = document.querySelector('.films-btn');
 const personsButton = document.querySelector('.persons-btn');
 const searchHeader = document.querySelector('.page-main__header');
