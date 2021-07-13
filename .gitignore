@@ -2,3 +2,9 @@ node_modules
 src
 package.json
 package-lock.json
+.firebase/
+.firebaserc
+.github/
+database.rules.json
+firebase.json
+public/
