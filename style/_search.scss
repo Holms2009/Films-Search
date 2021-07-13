@@ -21,7 +21,7 @@
 }
 
 .page-main__search-field {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     width: 600px;
     padding: 5px 10px;
     border-radius: 5px;
@@ -29,6 +29,22 @@
     &:focus {
         outline: none;
     }
+}
+
+.page-main__checkboxes {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.page-main__label {
+    margin-right: 10px;
+    font-size: 12px;
+}
+
+.page-main__checkbox {
+    margin-right: 5px;
+    vertical-align: middle;
 }
 
 .page-main__search-button {

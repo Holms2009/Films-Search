@@ -80,16 +80,8 @@ var HeaderMenu = function (_React$Component3) {
   _createClass(HeaderMenu, [{
     key: 'render',
     value: function render() {
-      var menuItems = this.props.items.map(function (item) {
-        return React.createElement(
-          'li',
-          { className: 'page-header__item' },
-          React.createElement(
-            'a',
-            { href: '#', className: "page-header__link " + item.class },
-            item.name
-          )
-        );
+      var menuItems = this.props.items.map(function (item, index) {
+        return React.createElement(HeaderItem, { key: index, 'class': item.class, name: item.name });
       });
 
       return React.createElement(
@@ -107,19 +99,46 @@ var HeaderMenu = function (_React$Component3) {
   return HeaderMenu;
 }(React.Component);
 
-var SearchBlock = function (_React$Component4) {
-  _inherits(SearchBlock, _React$Component4);
+var HeaderItem = function (_React$Component4) {
+  _inherits(HeaderItem, _React$Component4);
+
+  function HeaderItem() {
+    _classCallCheck(this, HeaderItem);
+
+    return _possibleConstructorReturn(this, (HeaderItem.__proto__ || Object.getPrototypeOf(HeaderItem)).apply(this, arguments));
+  }
+
+  _createClass(HeaderItem, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'li',
+        { className: 'page-header__item' },
+        React.createElement(
+          'a',
+          { href: '#', className: "page-header__link " + this.props.class },
+          this.props.name
+        )
+      );
+    }
+  }]);
+
+  return HeaderItem;
+}(React.Component);
+
+var SearchBlock = function (_React$Component5) {
+  _inherits(SearchBlock, _React$Component5);
 
   function SearchBlock(props) {
     _classCallCheck(this, SearchBlock);
 
-    var _this4 = _possibleConstructorReturn(this, (SearchBlock.__proto__ || Object.getPrototypeOf(SearchBlock)).call(this, props));
+    var _this5 = _possibleConstructorReturn(this, (SearchBlock.__proto__ || Object.getPrototypeOf(SearchBlock)).call(this, props));
 
-    _this4.state = {
+    _this5.state = {
       activeSearch: false,
       header: 'Поиск фильмов'
     };
-    return _this4;
+    return _this5;
   }
 
   _createClass(SearchBlock, [{
@@ -172,8 +191,8 @@ var SearchBlock = function (_React$Component4) {
   return SearchBlock;
 }(React.Component);
 
-var Header = function (_React$Component5) {
-  _inherits(Header, _React$Component5);
+var Header = function (_React$Component6) {
+  _inherits(Header, _React$Component6);
 
   function Header() {
     _classCallCheck(this, Header);
@@ -191,17 +210,22 @@ var Header = function (_React$Component5) {
   return Header;
 }(React.Component);
 
-var Form = function (_React$Component6) {
-  _inherits(Form, _React$Component6);
+var Form = function (_React$Component7) {
+  _inherits(Form, _React$Component7);
 
   function Form(props) {
     _classCallCheck(this, Form);
 
-    var _this6 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
-    _this6.clickHandler = _this6.clickHandler.bind(_this6);
-    _this6.changeFormState = _this6.changeFormState.bind(_this6);
-    return _this6;
+    _this7.clickHandler = _this7.clickHandler.bind(_this7);
+    _this7.changeFormState = _this7.changeFormState.bind(_this7);
+    _this7.sortMethods = {
+      rating: function rating(a, b) {
+        return b.rating.kp - a.rating.kp;
+      }
+    };
+    return _this7;
   }
 
   _createClass(Form, [{
@@ -212,18 +236,20 @@ var Form = function (_React$Component6) {
   }, {
     key: 'clickHandler',
     value: function clickHandler(evt) {
-      var _this7 = this;
+      var _this8 = this;
 
       evt.preventDefault();
       var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
-      var start = fetch(request + ('&isStrict=false&token=' + token)).then(function (resp) {
+      var start = fetch(request + ('&limit=100&isStrict=false&token=' + token)).then(function (resp) {
         return resp.json();
       }).then(function (result) {
-        films = result.docs.map(function (item) {
-          return item;
-        });
+        films = result.docs.filter(function (item) {
+          return item.description !== null;
+        }).sort(_this8.sortMethods.rating);
       }).then(function () {
-        return _this7.changeFormState();
+        return log(films);
+      }).then(function () {
+        return _this8.changeFormState();
       });
     }
   }, {
@@ -233,6 +259,22 @@ var Form = function (_React$Component6) {
         'form',
         { method: this.props.method, className: this.props.class },
         React.createElement(InputElement, { type: 'input', 'class': 'page-main__search-field', plholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0438\u043B\u0438 \u0447\u0430\u0441\u0442\u044C \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044F \u0444\u0438\u043B\u044C\u043C\u0430' }),
+        React.createElement(
+          'div',
+          { className: 'page-main__checkboxes' },
+          React.createElement(
+            'label',
+            { className: 'page-main__label' },
+            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox' }),
+            '\u0413\u043E\u0434 \u0432\u044B\u0445\u043E\u0434\u0430'
+          ),
+          React.createElement(
+            'label',
+            { className: 'page-main__label' },
+            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox' }),
+            '\u0420\u0435\u0439\u0442\u0438\u043D\u0433'
+          )
+        ),
         React.createElement(InputElement, { type: 'submit', 'class': 'page-main__search-button', value: '\u041F\u043E\u0438\u0441\u043A', click: this.clickHandler })
       );
     }
@@ -241,8 +283,8 @@ var Form = function (_React$Component6) {
   return Form;
 }(React.Component);
 
-var InputElement = function (_React$Component7) {
-  _inherits(InputElement, _React$Component7);
+var InputElement = function (_React$Component8) {
+  _inherits(InputElement, _React$Component8);
 
   function InputElement() {
     _classCallCheck(this, InputElement);
@@ -266,8 +308,8 @@ var InputElement = function (_React$Component7) {
   return InputElement;
 }(React.Component);
 
-var ResultCard = function (_React$Component8) {
-  _inherits(ResultCard, _React$Component8);
+var ResultCard = function (_React$Component9) {
+  _inherits(ResultCard, _React$Component9);
 
   function ResultCard() {
     _classCallCheck(this, ResultCard);

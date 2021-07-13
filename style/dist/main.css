@@ -61,7 +61,7 @@
 }
 
 .page-main__search-field {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   width: 600px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -70,6 +70,22 @@
 
 .page-main__search-field:focus {
   outline: none;
+}
+
+.page-main__checkboxes {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.page-main__label {
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+.page-main__checkbox {
+  margin-right: 5px;
+  vertical-align: middle;
 }
 
 .page-main__search-button {
@@ -95,9 +111,10 @@
 }
 
 .page-main__results {
-  padding: 20px 0;
+  padding: 20px 50px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
@@ -106,6 +123,7 @@
   margin: 0;
   padding: 10px;
   border: 1px solid orange;
+  max-width: 900px;
 }
 
 .page-main__poster {
