@@ -136,24 +136,41 @@ var SearchBlock = function (_React$Component5) {
 
     _this5.state = {
       activeSearch: false,
-      header: 'Поиск фильмов'
+      header: 'Поиск фильмов',
+      resultsPage: 0
     };
+    _this5.results = [];
+    _this5.resultsToRender = _this5.resultsToRender.bind(_this5);
+    _this5.pages = [];
+    _this5.activePage = _this5.activePage.bind(_this5);
     return _this5;
   }
 
   _createClass(SearchBlock, [{
     key: 'searchState',
     value: function searchState() {
-      this.setState({
-        activeSearch: !this.state.activeSearch
-      });
+      this.setState({ activeSearch: !this.state.activeSearch });
+    }
+  }, {
+    key: 'activePage',
+    value: function activePage(evt) {
+      this.setState({ resultsPage: evt.target.textContent - 1 });
+    }
+  }, {
+    key: 'resultsToRender',
+    value: function resultsToRender(page) {
+      var toRender = [];
+      for (var i = page * 10; i <= page * 10 + 9 && i < this.results.length; i++) {
+        toRender.push(this.results[i]);
+      }
+      return toRender;
     }
   }, {
     key: 'render',
     value: function render() {
-      var results = void 0;
+      console.log(this.state.activeSearch);
       if (films.length > 0) {
-        results = films.map(function (film) {
+        this.results = films.map(function (film) {
           return React.createElement(ResultCard, {
             poster: film.poster.url,
             name: film.name,
@@ -162,8 +179,17 @@ var SearchBlock = function (_React$Component5) {
             year: film.year,
             key: film.id });
         });
-      } else {
-        results = null;
+      }
+
+      if (this.results.length > 10 && this.state.activeSearch) {
+        for (var i = 1; i <= Math.ceil(this.results.length / 10); i++) {
+          this.pages.push(React.createElement(PaginationElement, {
+            inner: i,
+            'class': 'page-main__item',
+            linkClass: 'page-main__link',
+            onClick: this.activePage,
+            key: i }));
+        }
       }
 
       return React.createElement(
@@ -180,8 +206,13 @@ var SearchBlock = function (_React$Component5) {
           React.createElement(Form, { method: 'GET', 'class': 'page-main__form', handler: this.searchState.bind(this) }),
           React.createElement(
             'div',
-            { className: 'page-main__results', id: 'search-results' },
-            results
+            { className: 'page-main__results' },
+            this.resultsToRender(this.state.resultsPage),
+            React.createElement(
+              'ul',
+              { className: 'page-main__list' },
+              this.pages
+            )
           )
         )
       );
@@ -191,41 +222,22 @@ var SearchBlock = function (_React$Component5) {
   return SearchBlock;
 }(React.Component);
 
-var Header = function (_React$Component6) {
-  _inherits(Header, _React$Component6);
-
-  function Header() {
-    _classCallCheck(this, Header);
-
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-  }
-
-  _createClass(Header, [{
-    key: 'render',
-    value: function render() {
-      return;
-    }
-  }]);
-
-  return Header;
-}(React.Component);
-
-var Form = function (_React$Component7) {
-  _inherits(Form, _React$Component7);
+var Form = function (_React$Component6) {
+  _inherits(Form, _React$Component6);
 
   function Form(props) {
     _classCallCheck(this, Form);
 
-    var _this7 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+    var _this6 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
-    _this7.clickHandler = _this7.clickHandler.bind(_this7);
-    _this7.changeFormState = _this7.changeFormState.bind(_this7);
-    _this7.sortMethods = {
+    _this6.clickHandler = _this6.clickHandler.bind(_this6);
+    _this6.changeFormState = _this6.changeFormState.bind(_this6);
+    _this6.sortMethods = {
       rating: function rating(a, b) {
         return b.rating.kp - a.rating.kp;
       }
     };
-    return _this7;
+    return _this6;
   }
 
   _createClass(Form, [{
@@ -236,7 +248,7 @@ var Form = function (_React$Component7) {
   }, {
     key: 'clickHandler',
     value: function clickHandler(evt) {
-      var _this8 = this;
+      var _this7 = this;
 
       evt.preventDefault();
       var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
@@ -245,11 +257,11 @@ var Form = function (_React$Component7) {
       }).then(function (result) {
         films = result.docs.filter(function (item) {
           return item.description !== null;
-        }).sort(_this8.sortMethods.rating);
+        }).sort(_this7.sortMethods.rating);
       }).then(function () {
         return log(films);
       }).then(function () {
-        return _this8.changeFormState();
+        return _this7.changeFormState();
       });
     }
   }, {
@@ -283,8 +295,8 @@ var Form = function (_React$Component7) {
   return Form;
 }(React.Component);
 
-var InputElement = function (_React$Component8) {
-  _inherits(InputElement, _React$Component8);
+var InputElement = function (_React$Component7) {
+  _inherits(InputElement, _React$Component7);
 
   function InputElement() {
     _classCallCheck(this, InputElement);
@@ -308,8 +320,8 @@ var InputElement = function (_React$Component8) {
   return InputElement;
 }(React.Component);
 
-var ResultCard = function (_React$Component9) {
-  _inherits(ResultCard, _React$Component9);
+var ResultCard = function (_React$Component8) {
+  _inherits(ResultCard, _React$Component8);
 
   function ResultCard() {
     _classCallCheck(this, ResultCard);
@@ -349,6 +361,33 @@ var ResultCard = function (_React$Component9) {
   }]);
 
   return ResultCard;
+}(React.Component);
+
+var PaginationElement = function (_React$Component9) {
+  _inherits(PaginationElement, _React$Component9);
+
+  function PaginationElement() {
+    _classCallCheck(this, PaginationElement);
+
+    return _possibleConstructorReturn(this, (PaginationElement.__proto__ || Object.getPrototypeOf(PaginationElement)).apply(this, arguments));
+  }
+
+  _createClass(PaginationElement, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'li',
+        { className: this.props.class, onClick: this.props.onClick },
+        React.createElement(
+          'a',
+          { href: '#', className: this.props.linkClass },
+          this.props.inner
+        )
+      );
+    }
+  }]);
+
+  return PaginationElement;
 }(React.Component);
 
 ReactDOM.render(React.createElement(App, null), domContainer);

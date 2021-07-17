@@ -131,6 +131,35 @@
   border: 5px solid orange;
 }
 
+.page-main__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.page-main__item:not(:last-child) {
+  margin-right: 10px;
+}
+
+.page-main__link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #000000;
+}
+
+.page-main__link:hover {
+  text-decoration: underline;
+}
+
+.page-main__link_active {
+  color: orange;
+}
+
 .container {
   margin: 0 auto;
   max-width: 1440px;
