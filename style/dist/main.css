@@ -81,11 +81,13 @@
 .page-main__label {
   margin-right: 10px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .page-main__checkbox {
   margin-right: 5px;
   vertical-align: middle;
+  cursor: pointer;
 }
 
 .page-main__search-button {
@@ -123,7 +125,8 @@
   margin: 0;
   padding: 10px;
   border: 1px solid orange;
-  max-width: 900px;
+  border-radius: 10px;
+  width: 900px;
 }
 
 .page-main__poster {

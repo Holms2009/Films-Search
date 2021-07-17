@@ -147,6 +147,11 @@ var SearchBlock = function (_React$Component5) {
   }
 
   _createClass(SearchBlock, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      if (this.state.activeSearch) this.searchState();
+    }
+  }, {
     key: 'searchState',
     value: function searchState() {
       this.setState({ activeSearch: !this.state.activeSearch });
@@ -168,7 +173,6 @@ var SearchBlock = function (_React$Component5) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.activeSearch);
       if (films.length > 0) {
         this.results = films.map(function (film) {
           return React.createElement(ResultCard, {
@@ -182,6 +186,7 @@ var SearchBlock = function (_React$Component5) {
       }
 
       if (this.results.length > 10 && this.state.activeSearch) {
+        this.pages = [];
         for (var i = 1; i <= Math.ceil(this.results.length / 10); i++) {
           this.pages.push(React.createElement(PaginationElement, {
             inner: i,
