@@ -76,18 +76,35 @@
   margin-bottom: 15px;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
 
 .page-main__label {
+  box-sizing: border-box;
+  height: 22px;
   margin-right: 10px;
   font-size: 12px;
+  line-height: 22px;
   cursor: pointer;
 }
 
 .page-main__checkbox {
+  margin: 0;
   margin-right: 5px;
   vertical-align: middle;
   cursor: pointer;
+}
+
+.page-main__plus-input {
+  width: 50px;
+  padding: 2px 4px;
+  margin-right: 20px;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.page-main__plus-input:focus {
+  outline: none;
 }
 
 .page-main__search-button {
@@ -126,12 +143,50 @@
   padding: 10px;
   border: 1px solid orange;
   border-radius: 10px;
-  width: 900px;
+  width: 700px;
+  font-size: 14px;
 }
 
 .page-main__poster {
-  width: 200px;
+  margin-bottom: 15px;
+  width: 150px;
   border: 5px solid orange;
+  border-radius: 5px;
+}
+
+.page-main__title {
+  margin: 0;
+  margin-bottom: 5px;
+}
+
+.page-main__kp-rating {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.page-main__description {
+  margin-bottom: 10px;
+}
+
+.page-main__description summary {
+  padding: 3px 6px;
+  margin-bottom: 5px;
+  width: 100px;
+  background-color: orange;
+  border-radius: 5px;
+  color: lightgoldenrodyellow;
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.page-main__description summary:hover {
+  background-color: #000000;
+}
+
+.page-main__release-year {
+  display: inline-block;
+  font-weight: 700;
 }
 
 .page-main__list {

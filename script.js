@@ -14,7 +14,7 @@ filmsButton.addEventListener('click', evt => {
         setTimeout(() => searchHeader.textContent = 'Поиск фильмов', 300);
         setTimeout(() => searchHeader.style = 'filter: blur(0); color: #000000', 350);
         searchField.value = '';
-        searchField.placeholder = 'Введите название или часть названия фильма';
+        searchField.placeholder = 'Введите название фильма';
         searchType = 'movie';
     } else {
         return;

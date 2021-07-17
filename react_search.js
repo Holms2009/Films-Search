@@ -173,12 +173,13 @@ var SearchBlock = function (_React$Component5) {
   }, {
     key: 'render',
     value: function render() {
+      if (this.state.activeSearch) this.pages = [];
       if (films.length > 0) {
         this.results = films.map(function (film) {
           return React.createElement(ResultCard, {
             poster: film.poster.url,
             name: film.name,
-            id: film.id,
+            kpRating: film.rating.kp,
             desc: film.description,
             year: film.year,
             key: film.id });
@@ -186,7 +187,6 @@ var SearchBlock = function (_React$Component5) {
       }
 
       if (this.results.length > 10 && this.state.activeSearch) {
-        this.pages = [];
         for (var i = 1; i <= Math.ceil(this.results.length / 10); i++) {
           this.pages.push(React.createElement(PaginationElement, {
             inner: i,
@@ -235,13 +235,22 @@ var Form = function (_React$Component6) {
 
     var _this6 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
 
-    _this6.clickHandler = _this6.clickHandler.bind(_this6);
-    _this6.changeFormState = _this6.changeFormState.bind(_this6);
+    _this6.state = {
+      yearChecked: false,
+      yearValue: '',
+      ratingChecked: false,
+      ratingValue: ''
+    };
     _this6.sortMethods = {
       rating: function rating(a, b) {
         return b.rating.kp - a.rating.kp;
       }
     };
+    _this6.clickHandler = _this6.clickHandler.bind(_this6);
+    _this6.changeFormState = _this6.changeFormState.bind(_this6);
+    _this6.yearCheckState = _this6.yearCheckState.bind(_this6);
+    _this6.getYear = _this6.getYear.bind(_this6);
+    _this6.ratingCheckState = _this6.ratingCheckState.bind(_this6);
     return _this6;
   }
 
@@ -257,6 +266,8 @@ var Form = function (_React$Component6) {
 
       evt.preventDefault();
       var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
+      if (this.state.yearValue !== '') request += '&field=year&search=' + this.state.yearValue;
+
       var start = fetch(request + ('&limit=100&isStrict=false&token=' + token)).then(function (resp) {
         return resp.json();
       }).then(function (result) {
@@ -270,27 +281,63 @@ var Form = function (_React$Component6) {
       });
     }
   }, {
+    key: 'yearCheckState',
+    value: function yearCheckState() {
+      this.setState({ yearChecked: !this.state.yearChecked });
+    }
+  }, {
+    key: 'getYear',
+    value: function getYear(evt) {
+      this.setState({ yearValue: evt.target.value });
+    }
+  }, {
+    key: 'yearInput',
+    value: function yearInput() {
+      if (this.state.yearChecked) {
+        return React.createElement(InputElement, { 'class': 'page-main__plus-input', value: this.state.yearValue, onChange: this.getYear });
+      } else {
+        return null;
+      }
+    }
+  }, {
+    key: 'ratingCheckState',
+    value: function ratingCheckState() {
+      this.setState({ ratingChecked: !this.state.ratingChecked });
+    }
+  }, {
+    key: 'ratingInput',
+    value: function ratingInput() {
+      if (this.state.ratingChecked) {
+        return React.createElement(InputElement, { 'class': 'page-main__plus-input', value: this.state.ratingValue });
+      } else {
+        return null;
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+      console.log(this.state.yearValue);
       return React.createElement(
         'form',
         { method: this.props.method, className: this.props.class },
-        React.createElement(InputElement, { type: 'input', 'class': 'page-main__search-field', plholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0438\u043B\u0438 \u0447\u0430\u0441\u0442\u044C \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u044F \u0444\u0438\u043B\u044C\u043C\u0430' }),
+        React.createElement(InputElement, { type: 'input', 'class': 'page-main__search-field', plholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0444\u0438\u043B\u044C\u043C\u0430' }),
         React.createElement(
           'div',
           { className: 'page-main__checkboxes' },
           React.createElement(
             'label',
             { className: 'page-main__label' },
-            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox' }),
+            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox', onChange: this.yearCheckState }),
             '\u0413\u043E\u0434 \u0432\u044B\u0445\u043E\u0434\u0430'
           ),
+          this.yearInput(),
           React.createElement(
             'label',
             { className: 'page-main__label' },
-            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox' }),
+            React.createElement(InputElement, { type: 'checkbox', 'class': 'page-main__checkbox', onChange: this.ratingCheckState }),
             '\u0420\u0435\u0439\u0442\u0438\u043D\u0433'
-          )
+          ),
+          this.ratingInput()
         ),
         React.createElement(InputElement, { type: 'submit', 'class': 'page-main__search-button', value: '\u041F\u043E\u0438\u0441\u043A', click: this.clickHandler })
       );
@@ -317,7 +364,8 @@ var InputElement = function (_React$Component7) {
         className: this.props.class,
         value: this.props.value,
         placeholder: this.props.plholder,
-        onClick: this.props.click
+        onClick: this.props.click,
+        onChange: this.props.onChange
       });
     }
   }]);
@@ -348,18 +396,23 @@ var ResultCard = function (_React$Component8) {
         ),
         React.createElement(
           'span',
-          { className: 'page-main__kp-id' },
-          'ID: ' + this.props.id
+          { className: 'page-main__kp-rating' },
+          'КП: ' + this.props.kpRating
         ),
         React.createElement(
-          'p',
+          'details',
           { className: 'page-main__description' },
+          React.createElement(
+            'summary',
+            null,
+            '\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435'
+          ),
           this.props.desc
         ),
         React.createElement(
           'span',
           { className: 'page-main__release-year' },
-          'Год выпуска: ' + this.props.year
+          'Год выхода: ' + this.props.year
         )
       );
     }
