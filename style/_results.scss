@@ -37,6 +37,8 @@
 
 .page-main__description {
     margin-bottom: 10px;
+    transition: all 1s ease;
+    overflow: hidden;
     summary {
         padding: 3px 6px;
         margin-bottom: 5px;
@@ -46,10 +48,35 @@
         color: $color2;
         text-align: center;
         cursor: pointer;
-        transition: color 0.2s;
+        transition: background-color 0.2s;
         &:hover {
             background-color: $color3
         }
+    }
+    &[open] p {
+        animation-name: growFont, fadeOut;
+        animation-duration: 500ms, 200ms;
+        animation-delay: 0ms, 500ms;
+    }    
+}
+
+@keyframes growFont {
+    0% {
+        font-size: 0;
+        opacity: 0;
+    }
+    100% {
+        font-size: 1em;
+        opacity: 0;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 

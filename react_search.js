@@ -239,7 +239,9 @@ var Form = function (_React$Component6) {
       yearChecked: false,
       yearValue: '',
       ratingChecked: false,
-      ratingValue: ''
+      ratingValue: '',
+      searchFieldValue: '',
+      searchFieldPlaceholder: 'Введите название фильма'
     };
     _this6.sortMethods = {
       rating: function rating(a, b) {
@@ -248,9 +250,11 @@ var Form = function (_React$Component6) {
     };
     _this6.clickHandler = _this6.clickHandler.bind(_this6);
     _this6.changeFormState = _this6.changeFormState.bind(_this6);
+    _this6.getSearchFieldValue = _this6.getSearchFieldValue.bind(_this6);
     _this6.yearCheckState = _this6.yearCheckState.bind(_this6);
     _this6.getYear = _this6.getYear.bind(_this6);
     _this6.ratingCheckState = _this6.ratingCheckState.bind(_this6);
+    _this6.getRating = _this6.getRating.bind(_this6);
     return _this6;
   }
 
@@ -260,13 +264,31 @@ var Form = function (_React$Component6) {
       this.props.handler();
     }
   }, {
+    key: 'emptyFieldError',
+    value: function emptyFieldError() {
+      var error = new Error('Нечего искать');
+      this.setState({ searchFieldPlaceholder: error.message });
+    }
+  }, {
+    key: 'getSearchFieldValue',
+    value: function getSearchFieldValue(evt) {
+      this.setState({ searchFieldValue: evt.target.value });
+    }
+  }, {
     key: 'clickHandler',
     value: function clickHandler(evt) {
       var _this7 = this;
 
       evt.preventDefault();
-      var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + searchField.value;
+
+      if (this.state.searchFieldValue === '') {
+        this.emptyFieldError();
+        return;
+      }
+
+      var request = 'https://api.kinopoisk.dev/' + searchType + '?field=name&search=' + this.state.searchFieldValue;
       if (this.state.yearValue !== '') request += '&field=year&search=' + this.state.yearValue;
+      if (this.state.ratingValue !== '') request += '&field=rating.kp&search=' + this.state.ratingValue;
 
       var start = fetch(request + ('&limit=100&isStrict=false&token=' + token)).then(function (resp) {
         return resp.json();
@@ -283,7 +305,11 @@ var Form = function (_React$Component6) {
   }, {
     key: 'yearCheckState',
     value: function yearCheckState() {
-      this.setState({ yearChecked: !this.state.yearChecked });
+      if (this.state.yearChecked === true) {
+        this.setState({ yearChecked: !this.state.yearChecked, yearValue: '' });
+      } else {
+        this.setState({ yearChecked: !this.state.yearChecked });
+      }
     }
   }, {
     key: 'getYear',
@@ -294,7 +320,12 @@ var Form = function (_React$Component6) {
     key: 'yearInput',
     value: function yearInput() {
       if (this.state.yearChecked) {
-        return React.createElement(InputElement, { 'class': 'page-main__plus-input', value: this.state.yearValue, onChange: this.getYear });
+        return React.createElement(InputElement, {
+          'class': 'page-main__plus-input',
+          value: this.state.yearValue,
+          onChange: this.getYear,
+          title: '\u0423\u043A\u0430\u0436\u0438\u0442\u0435 \u0433\u043E\u0434 \u0438\u043B\u0438 \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D. \u041D\u0430\u043F\u0440\u0438\u043C\u0435\u0440: 1993-2001'
+        });
       } else {
         return null;
       }
@@ -302,13 +333,27 @@ var Form = function (_React$Component6) {
   }, {
     key: 'ratingCheckState',
     value: function ratingCheckState() {
-      this.setState({ ratingChecked: !this.state.ratingChecked });
+      if (this.state.ratingChecked === true) {
+        this.setState({ ratingChecked: !this.state.ratingChecked, ratingValue: '' });
+      } else {
+        this.setState({ ratingChecked: !this.state.ratingChecked });
+      }
+    }
+  }, {
+    key: 'getRating',
+    value: function getRating(evt) {
+      this.setState({ ratingValue: evt.target.value });
     }
   }, {
     key: 'ratingInput',
     value: function ratingInput() {
       if (this.state.ratingChecked) {
-        return React.createElement(InputElement, { 'class': 'page-main__plus-input', value: this.state.ratingValue });
+        return React.createElement(InputElement, {
+          'class': 'page-main__plus-input',
+          value: this.state.ratingValue,
+          title: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0440\u0435\u0439\u0442\u0438\u043D\u0433 \u0438\u043B\u0438 \u0434\u0438\u0430\u043F\u0430\u0437\u043E\u043D. \u041D\u0430\u043F\u0440\u0438\u043C\u0435\u0440 6.5-9',
+          onChange: this.getRating
+        });
       } else {
         return null;
       }
@@ -316,11 +361,16 @@ var Form = function (_React$Component6) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.state.yearValue);
       return React.createElement(
         'form',
         { method: this.props.method, className: this.props.class },
-        React.createElement(InputElement, { type: 'input', 'class': 'page-main__search-field', plholder: '\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0444\u0438\u043B\u044C\u043C\u0430' }),
+        React.createElement(InputElement, {
+          type: 'input',
+          'class': 'page-main__search-field',
+          plholder: this.state.searchFieldPlaceholder,
+          value: this.state.searchFieldValue,
+          onChange: this.getSearchFieldValue
+        }),
         React.createElement(
           'div',
           { className: 'page-main__checkboxes' },
@@ -339,7 +389,7 @@ var Form = function (_React$Component6) {
           ),
           this.ratingInput()
         ),
-        React.createElement(InputElement, { type: 'submit', 'class': 'page-main__search-button', value: '\u041F\u043E\u0438\u0441\u043A', click: this.clickHandler })
+        React.createElement(InputElement, { type: 'submit', 'class': 'page-main__search-button', value: '\u041F\u043E\u0438\u0441\u043A', onClick: this.clickHandler })
       );
     }
   }]);
@@ -364,7 +414,8 @@ var InputElement = function (_React$Component7) {
         className: this.props.class,
         value: this.props.value,
         placeholder: this.props.plholder,
-        onClick: this.props.click,
+        title: this.props.title,
+        onClick: this.props.onClick,
         onChange: this.props.onChange
       });
     }
@@ -407,7 +458,11 @@ var ResultCard = function (_React$Component8) {
             null,
             '\u041E\u043F\u0438\u0441\u0430\u043D\u0438\u0435'
           ),
-          this.props.desc
+          React.createElement(
+            'p',
+            null,
+            this.props.desc
+          )
         ),
         React.createElement(
           'span',

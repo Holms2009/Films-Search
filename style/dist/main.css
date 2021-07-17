@@ -166,6 +166,8 @@
 
 .page-main__description {
   margin-bottom: 10px;
+  transition: all 1s ease;
+  overflow: hidden;
 }
 
 .page-main__description summary {
@@ -177,11 +179,37 @@
   color: lightgoldenrodyellow;
   text-align: center;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: background-color 0.2s;
 }
 
 .page-main__description summary:hover {
   background-color: #000000;
+}
+
+.page-main__description[open] p {
+  animation-name: growFont, fadeOut;
+  animation-duration: 500ms, 200ms;
+  animation-delay: 0ms, 500ms;
+}
+
+@keyframes growFont {
+  0% {
+    font-size: 0;
+    opacity: 0;
+  }
+  100% {
+    font-size: 1em;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .page-main__release-year {
